@@ -1,10 +1,11 @@
 #define LED_PIN 3
 #define MODE_SWITCH 2
 #define NUM_STATES 5   // 5 = random will be there, 4 = no random
-#define MAX_PWM 153    // 60% = 153/255 | this is basically brightness
-#define STROBE_HZ 10   // 10
+#define FULL_PWM 255   // 255 full brightness
+#define MAX_PWM 153    // 60% = 153/255 | this is basically brightness for the continuous on.
+#define STROBE_HZ 11   // 10
 #define SAW_HZ 5       //  5
-#define RAND_HZ 40     // 40
+#define RAND_HZ 30     // 30
 
 int state = 0;
 bool ModePressed = 0;
@@ -32,14 +33,14 @@ void loop() {
       analogWrite(LED_PIN, MAX_PWM);
     break;
     case 2: // strobe
-      analogWrite(LED_PIN, ((millis()*STROBE_HZ/500)%2)*MAX_PWM);
+      analogWrite(LED_PIN, ((millis()*STROBE_HZ/500)%2)*FULL_PWM);
     break;
     case 3: // saw
-      analogWrite(LED_PIN, MAX_PWM - ((millis()*SAW_HZ*MAX_PWM/1000)%(MAX_PWM+1)));
+      analogWrite(LED_PIN, FULL_PWM - ((millis()*SAW_HZ*FULL_PWM/1000)%(FULL_PWM+1)));
     break; 
     case 4: //random
     if ((millis()*RAND_HZ/500)%2)
-       analogWrite(LED_PIN, MAX_PWM*random(2));
+       analogWrite(LED_PIN, FULL_PWM*random(2));
     break;
   }
 
